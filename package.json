@@ -2,15 +2,21 @@
   "name": "tabs",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@webpack-cli/generators": "^2.4.1",
+    "html-webpack-plugin": "^5.5.0",
+    "mini-css-extract-plugin": "^2.4.4",
+    "ts-loader": "^9.2.6",
     "webpack": "^5.62.1",
-    "webpack-cli": "^4.9.1"
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.4.0",
+    "workbox-webpack-plugin": "^6.3.0"
   },
   "dependencies": {
     "typescript": "^4.5.0-beta"
