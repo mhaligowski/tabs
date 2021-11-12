@@ -1,5 +1,16 @@
 NPX=npx
-WEBPACK=$(NPX) webpack
+CONFIG=./config/webpack.config.js
+WEBPACK=$(NPX) webpack --config=$(CONFIG)
 
-serve: ./config/webpack.config.js
-	$(WEBPACK) serve --config=$<
+SRC=./src
+
+serve: $(CONFIG)
+	$(WEBPACK) $@
+
+dist: $(CONFIG) $(SRC)
+	$(WEBPACK)
+
+clean:
+	-rm -rf dist
+
+.PHONY: clean dist

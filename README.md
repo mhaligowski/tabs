@@ -1,15 +1,12 @@
-# 🚀 Welcome to your new awesome project!
+# 🎸 Guitar tabulature renderer
 
-This project has been created using **webpack-cli**, you can now run
+Renders guitar tabs.
 
-```
-npm run build
-```
+## Development
 
-or
+### Make commands
 
-```
-yarn build
-```
+* `make serve` starts the development server
+* `make dist` builds the bundle into `dist/` directory
+* `make clean` cleans the directory
 
-to bundle your application
