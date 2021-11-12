@@ -1,15 +1,15 @@
 NPX=npx
 CONFIG=./config/webpack.config.js
-WEBPACK=$(NPX) webpack --config=$(CONFIG)
+WEBPACK=$(NPX) webpack
 SRC=./src
 
 FB=firebase
 
 serve: $(CONFIG)
-	$(WEBPACK) $@
+	$(WEBPACK) $@ --config=$<
 
 dist: $(CONFIG) $(SRC)
-	$(WEBPACK)
+	$(WEBPACK) --config=$<
 
 clean:
 	-rm -rf dist

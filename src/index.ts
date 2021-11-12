@@ -1,3 +1,4 @@
+import { Pluck, Tabulature } from "./types";
 import { Svg, SVG, Text } from "@svgdotjs/svg.js";
 
 const VERTICAL_STRING_SPACE: number = 20;
@@ -34,25 +35,32 @@ for (var i = 0; i < STRING_COUNT; i++) {
   draw.line(0, top, 600, top).stroke({ color: "#000", width: 1 });
 }
 
-const put = (draw: Svg, string_no: number, fret: number, position: number) =>
+const put = (draw: Svg, position: number, pluck: Pluck) =>
   draw
-    .plain(fret.toString())
+    .plain(pluck.fret?.toString())
     .font({ fill: "#000", size: 20 })
     .move(
       position,
-      VERTICAL_STRING_SPACE * string_no + VERTICAL_PADDING - FONT_HEIGHT / 2
+      VERTICAL_STRING_SPACE * pluck.string_no +
+        VERTICAL_PADDING -
+        FONT_HEIGHT / 2
     );
+const render = (draw: Svg, tab: Tabulature) =>
+  tab.symbols.map((p, i) => put(draw, (i + 1) * 40, p));
 
-// Draw pentatonic
-put(draw, 5, 5, 40);
-put(draw, 5, 8, 80);
-put(draw, 4, 5, 120);
-put(draw, 4, 7, 160);
-put(draw, 3, 5, 200);
-put(draw, 3, 7, 240);
-put(draw, 2, 5, 280);
-put(draw, 2, 7, 320);
-put(draw, 1, 5, 360);
-put(draw, 1, 8, 400);
-put(draw, 0, 5, 440);
-put(draw, 0, 8, 480);
+const pentatonic: Pluck[] = [
+  { string_no: 5, fret: 5 },
+  { string_no: 5, fret: 8 },
+  { string_no: 4, fret: 5 },
+  { string_no: 4, fret: 7 },
+  { string_no: 3, fret: 5 },
+  { string_no: 3, fret: 7 },
+  { string_no: 2, fret: 5 },
+  { string_no: 2, fret: 7 },
+  { string_no: 1, fret: 5 },
+  { string_no: 1, fret: 8 },
+  { string_no: 0, fret: 5 },
+  { string_no: 0, fret: 8 },
+];
+
+render(draw, { symbols: pentatonic });
