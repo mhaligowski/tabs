@@ -17,6 +17,7 @@ const config = {
   devServer: {
     open: true,
     host: "localhost",
+    historyApiFallback: true,
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -63,7 +64,6 @@ const config = {
 module.exports = () => {
   if (isProduction) {
     config.mode = "production";
-
     config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
   } else {
     config.mode = "development";

@@ -48,6 +48,23 @@ const put = (draw: Svg, position: number, pluck: Pluck) =>
 const render = (draw: Svg, tab: Tabulature) =>
   tab.symbols.map((p, i) => put(draw, (i + 1) * 40, p));
 
+const parseFromLocation = (location: Location): Tabulature | null => {
+  const search = location.search;
+  if (search.length === 0) {
+    return null;
+  }
+  const searchParams = new URLSearchParams(search);
+  if (!searchParams.has("tab")) {
+    return null;
+  }
+  const serializedTab = searchParams.get("tab");
+  const stringifiedTab = window.atob(serializedTab);
+
+  return JSON.parse(stringifiedTab);
+};
+
+// Default:
+// eyJzeW1ib2xzIjpbeyJzdHJpbmdfbm8iOjUsImZyZXQiOjV9LHsic3RyaW5nX25vIjo1LCJmcmV0Ijo4fSx7InN0cmluZ19ubyI6NCwiZnJldCI6NX0seyJzdHJpbmdfbm8iOjQsImZyZXQiOjd9LHsic3RyaW5nX25vIjozLCJmcmV0Ijo1fSx7InN0cmluZ19ubyI6MywiZnJldCI6N30seyJzdHJpbmdfbm8iOjIsImZyZXQiOjV9LHsic3RyaW5nX25vIjoyLCJmcmV0Ijo3fSx7InN0cmluZ19ubyI6MSwiZnJldCI6NX0seyJzdHJpbmdfbm8iOjEsImZyZXQiOjh9LHsic3RyaW5nX25vIjowLCJmcmV0Ijo1fSx7InN0cmluZ19ubyI6MCwiZnJldCI6OH1dfQ==
 const pentatonic: Pluck[] = [
   { string_no: 5, fret: 5 },
   { string_no: 5, fret: 8 },
@@ -62,5 +79,7 @@ const pentatonic: Pluck[] = [
   { string_no: 0, fret: 5 },
   { string_no: 0, fret: 8 },
 ];
+const defaultTab = { symbols: pentatonic };
 
-render(draw, { symbols: pentatonic });
+const tabToRender = parseFromLocation(window.location) ?? defaultTab;
+render(draw, tabToRender);
