@@ -1,8 +1,9 @@
 NPX=npx
 CONFIG=./config/webpack.config.js
 WEBPACK=$(NPX) webpack --config=$(CONFIG)
-
 SRC=./src
+
+FB=firebase
 
 serve: $(CONFIG)
 	$(WEBPACK) $@
@@ -13,4 +14,7 @@ dist: $(CONFIG) $(SRC)
 clean:
 	-rm -rf dist
 
-.PHONY: clean dist
+deploy: dist
+	$(FB) $@
+
+.PHONY: clean dist deploy
