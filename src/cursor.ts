@@ -21,16 +21,6 @@ class Cursor {
     this._position = position;
   }
 }
-
-const renderCursor = (svg: Svg, cursor: Cursor): void => {
-  console.log("top", config.top(cursor.stringNo));
-  svg
-    .rect(config.fontWidth, config.fontHeight)
-    .fill("#ff0")
-    .stroke({ color: "#fa0", width: 1 })
-    .move(config.left(cursor.position), config.top(cursor.stringNo));
-};
-
 class SVGCursorRenderer {
   private elem: Rect;
 

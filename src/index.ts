@@ -1,6 +1,7 @@
 import { Pluck, Tabulature } from "./types";
 import { Svg, SVG, Text } from "@svgdotjs/svg.js";
 import { Cursor, SVGCursorRenderer } from "./cursor";
+import * as keys from "mousetrap";
 
 const VERTICAL_STRING_SPACE: number = 20;
 const VERTICAL_PADDING = VERTICAL_STRING_SPACE;
@@ -92,3 +93,19 @@ const cursorRenderer: SVGCursorRenderer = new SVGCursorRenderer(draw);
 cursorRenderer.render(cursor);
 
 render(draw, tabToRender);
+keys.bind("up", () => {
+  cursor.stringNo = cursor.stringNo - 1;
+  cursorRenderer.render(cursor);
+});
+keys.bind("down", () => {
+  cursor.stringNo = cursor.stringNo + 1;
+  cursorRenderer.render(cursor);
+});
+keys.bind("left", () => {
+  cursor.position = cursor.position - 1;
+  cursorRenderer.render(cursor);
+});
+keys.bind("right", () => {
+  cursor.position = cursor.position + 1;
+  cursorRenderer.render(cursor);
+});
