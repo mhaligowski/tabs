@@ -1,6 +1,6 @@
 import { Pluck, Tabulature } from "./types";
 import { Svg, SVG, Text } from "@svgdotjs/svg.js";
-import { Cursor, renderCursor } from "./cursor";
+import { Cursor, SVGCursorRenderer } from "./cursor";
 
 const VERTICAL_STRING_SPACE: number = 20;
 const VERTICAL_PADDING = VERTICAL_STRING_SPACE;
@@ -85,9 +85,10 @@ const tabToRender = parseFromLocation(window.location) ?? defaultTab;
 
 // Add cursor
 const cursor = new Cursor();
-
 cursor.stringNo = tabToRender.symbols[0].string_no;
 cursor.position = 0;
 
-renderCursor(draw, cursor);
+const cursorRenderer: SVGCursorRenderer = new SVGCursorRenderer(draw);
+cursorRenderer.render(cursor);
+
 render(draw, tabToRender);

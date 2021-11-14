@@ -1,4 +1,4 @@
-import { Svg } from "@svgdotjs/svg.js";
+import { Rect, Svg } from "@svgdotjs/svg.js";
 import { config } from "./config";
 
 class Cursor {
@@ -31,4 +31,22 @@ const renderCursor = (svg: Svg, cursor: Cursor): void => {
     .move(config.left(cursor.position), config.top(cursor.stringNo));
 };
 
-export { Cursor, renderCursor };
+class SVGCursorRenderer {
+  private elem: Rect;
+
+  constructor(draw: Svg) {
+    this.elem = draw
+      .rect(config.fontWidth, config.fontHeight)
+      .fill("#ff0")
+      .stroke({ color: "#fa0", width: 1 })
+      .attr("visible", "hidden");
+  }
+
+  render(cursor: Cursor): void {
+    this.elem
+      .attr("visible", "visible")
+      .move(config.left(cursor.position), config.top(cursor.stringNo));
+  }
+}
+
+export { Cursor, SVGCursorRenderer };
