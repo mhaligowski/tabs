@@ -1,14 +1,15 @@
 import { Pluck, Tabulature } from "./types";
 import { Svg, SVG, Text } from "@svgdotjs/svg.js";
+import { Cursor, renderCursor } from "./cursor";
 
 const VERTICAL_STRING_SPACE: number = 20;
-const VERTICAL_PADDING = VERTICAL_STRING_SPACE / 2;
+const VERTICAL_PADDING = VERTICAL_STRING_SPACE;
 const STRING_COUNT: number = 6;
 const FONT_HEIGHT = new Text().text("0123456789").font({ size: 20 }).bbox().h;
 
 var draw: Svg = SVG()
   .addTo("#root")
-  .size(600, 100 + VERTICAL_STRING_SPACE); // VERTICAL_SPACE for vertical margin
+  .size(600, 100 + VERTICAL_STRING_SPACE * 2); // VERTICAL_SPACE for vertical margin
 
 // Draw vertical line
 draw
@@ -80,6 +81,13 @@ const pentatonic: Pluck[] = [
   { string_no: 0, fret: 8 },
 ];
 const defaultTab = { symbols: pentatonic };
-
 const tabToRender = parseFromLocation(window.location) ?? defaultTab;
+
+// Add cursor
+const cursor = new Cursor();
+
+cursor.stringNo = tabToRender.symbols[0].string_no;
+cursor.position = 0;
+
+renderCursor(draw, cursor);
 render(draw, tabToRender);
