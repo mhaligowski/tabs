@@ -1,8 +1,36 @@
 import { Pluck, Tabulature } from "./types";
 import { Svg, SVG, Text } from "@svgdotjs/svg.js";
 import { Cursor, SVGCursorRenderer } from "./cursor";
-import * as keys from "mousetrap";
+import keys from "mousetrap";
+import { configureStore, createSlice } from "@reduxjs/toolkit";
 
+// Redux Init logic here
+
+const counterSlice = createSlice({
+  name: "counter",
+  initialState: {
+    value: 0,
+  },
+  reducers: {
+    incremented: (state) => {
+      // Redux Toolkit allows us to write "mutating" logic in reducers. It
+      // doesn't actually mutate the state because it uses the Immer library,
+      // which detects changes to a "draft state" and produces a brand new
+      // immutable state based off those changes
+      state.value += 1;
+    },
+    decremented: (state) => {
+      state.value -= 1;
+    },
+  },
+});
+
+const store = configureStore({
+  reducer: counterSlice.reducer,
+});
+
+// Some constants
+// TODO: get rid of these in favor of the config.ts
 const VERTICAL_STRING_SPACE: number = 20;
 const VERTICAL_PADDING = VERTICAL_STRING_SPACE;
 const STRING_COUNT: number = 6;
