@@ -89,7 +89,7 @@ store.dispatch(goTo({ stringNo: 5, position: 0 } as Cursor));
 const cursorRenderer: SVGCursorRenderer = new SVGCursorRenderer(draw);
 cursorRenderer.render(store.getState().cursor);
 
-render(draw, tabToRender);
+render(draw, store.getState().tabulature);
 keys.bind("up", () => {
   store.dispatch(up());
   cursorRenderer.render(store.getState().cursor);
@@ -106,3 +106,4 @@ keys.bind("right", () => {
   store.dispatch(right());
   cursorRenderer.render(store.getState().cursor);
 });
+
