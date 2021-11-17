@@ -2,13 +2,16 @@ import keys from "mousetrap";
 import { configureStore } from "@reduxjs/toolkit";
 import { Svg, SVG, Text } from "@svgdotjs/svg.js";
 
-import { Pluck, Tabulature } from "./tab/types";
+import { Symbol, Tabulature } from "./tab/types";
+import tabulatureSlice, { setTabulature } from "./tab/slice";
 
 import { Cursor } from "./cursor/cursor";
 import { SVGCursorRenderer } from "./cursor/render";
 import cursorSlice, { up, down, left, right, goTo } from "./cursor/slice";
 
-const store = configureStore({ reducer: { cursor: cursorSlice } });
+const store = configureStore({
+  reducer: { cursor: cursorSlice, tabulature: tabulatureSlice },
+});
 
 // Some constants
 // TODO: get rid of these in favor of the config.ts
@@ -46,7 +49,7 @@ for (var i = 0; i < STRING_COUNT; i++) {
   draw.line(0, top, 600, top).stroke({ color: "#000", width: 1 });
 }
 
-const put = (draw: Svg, position: number, pluck: Pluck) =>
+const put = (draw: Svg, position: number, pluck: Symbol) =>
   draw
     .plain(pluck.fret?.toString())
     .font({ fill: "#000", size: 20 })
@@ -76,22 +79,11 @@ const parseFromLocation = (location: Location): Tabulature | null => {
 
 // Default:
 // eyJzeW1ib2xzIjpbeyJzdHJpbmdfbm8iOjUsImZyZXQiOjV9LHsic3RyaW5nX25vIjo1LCJmcmV0Ijo4fSx7InN0cmluZ19ubyI6NCwiZnJldCI6NX0seyJzdHJpbmdfbm8iOjQsImZyZXQiOjd9LHsic3RyaW5nX25vIjozLCJmcmV0Ijo1fSx7InN0cmluZ19ubyI6MywiZnJldCI6N30seyJzdHJpbmdfbm8iOjIsImZyZXQiOjV9LHsic3RyaW5nX25vIjoyLCJmcmV0Ijo3fSx7InN0cmluZ19ubyI6MSwiZnJldCI6NX0seyJzdHJpbmdfbm8iOjEsImZyZXQiOjh9LHsic3RyaW5nX25vIjowLCJmcmV0Ijo1fSx7InN0cmluZ19ubyI6MCwiZnJldCI6OH1dfQ==
-const pentatonic: Pluck[] = [
-  { string_no: 5, fret: 5 },
-  { string_no: 5, fret: 8 },
-  { string_no: 4, fret: 5 },
-  { string_no: 4, fret: 7 },
-  { string_no: 3, fret: 5 },
-  { string_no: 3, fret: 7 },
-  { string_no: 2, fret: 5 },
-  { string_no: 2, fret: 7 },
-  { string_no: 1, fret: 5 },
-  { string_no: 1, fret: 8 },
-  { string_no: 0, fret: 5 },
-  { string_no: 0, fret: 8 },
-];
-const defaultTab = { symbols: pentatonic };
-const tabToRender = parseFromLocation(window.location) ?? defaultTab;
+const tabToRender = parseFromLocation(window.location);
+if (tabToRender) {
+  store.dispatch(setTabulature(tabToRender));
+}
+
 store.dispatch(goTo({ stringNo: 5, position: 0 } as Cursor));
 
 const cursorRenderer: SVGCursorRenderer = new SVGCursorRenderer(draw);

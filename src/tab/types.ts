@@ -1,13 +1,13 @@
 /**
  * Represents a single symbol on the tabulature.
  */
-export type Pluck = {
+export type Symbol = {
   string_no?: number;
   fret?: number;
 };
 
-export type Symbol = Pluck;
+
 
 export type Tabulature = {
-    symbols: Symbol[]
-}
+  symbols: Symbol[];
+};
