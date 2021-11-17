@@ -1,33 +1,14 @@
-import { Pluck, Tabulature } from "./types";
-import { Svg, SVG, Text } from "@svgdotjs/svg.js";
-import { Cursor, SVGCursorRenderer } from "./cursor";
 import keys from "mousetrap";
-import { configureStore, createSlice } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
+import { Svg, SVG, Text } from "@svgdotjs/svg.js";
 
-// Redux Init logic here
+import { Pluck, Tabulature } from "./tab/types";
 
-const counterSlice = createSlice({
-  name: "counter",
-  initialState: {
-    value: 0,
-  },
-  reducers: {
-    incremented: (state) => {
-      // Redux Toolkit allows us to write "mutating" logic in reducers. It
-      // doesn't actually mutate the state because it uses the Immer library,
-      // which detects changes to a "draft state" and produces a brand new
-      // immutable state based off those changes
-      state.value += 1;
-    },
-    decremented: (state) => {
-      state.value -= 1;
-    },
-  },
-});
+import { Cursor } from "./cursor/cursor";
+import { SVGCursorRenderer } from "./cursor/render";
+import cursorSlice, { up, down, left, right, goTo } from "./cursor/slice";
 
-const store = configureStore({
-  reducer: counterSlice.reducer,
-});
+const store = configureStore({ reducer: { cursor: cursorSlice } });
 
 // Some constants
 // TODO: get rid of these in favor of the config.ts
@@ -111,29 +92,25 @@ const pentatonic: Pluck[] = [
 ];
 const defaultTab = { symbols: pentatonic };
 const tabToRender = parseFromLocation(window.location) ?? defaultTab;
-
-// Add cursor
-const cursor = new Cursor();
-cursor.stringNo = tabToRender.symbols[0].string_no;
-cursor.position = 0;
+store.dispatch(goTo({ stringNo: 5, position: 0 } as Cursor));
 
 const cursorRenderer: SVGCursorRenderer = new SVGCursorRenderer(draw);
-cursorRenderer.render(cursor);
+cursorRenderer.render(store.getState().cursor);
 
 render(draw, tabToRender);
 keys.bind("up", () => {
-  cursor.stringNo = cursor.stringNo - 1;
-  cursorRenderer.render(cursor);
+  store.dispatch(up());
+  cursorRenderer.render(store.getState().cursor);
 });
 keys.bind("down", () => {
-  cursor.stringNo = cursor.stringNo + 1;
-  cursorRenderer.render(cursor);
+  store.dispatch(down());
+  cursorRenderer.render(store.getState().cursor);
 });
 keys.bind("left", () => {
-  cursor.position = cursor.position - 1;
-  cursorRenderer.render(cursor);
+  store.dispatch(left());
+  cursorRenderer.render(store.getState().cursor);
 });
 keys.bind("right", () => {
-  cursor.position = cursor.position + 1;
-  cursorRenderer.render(cursor);
+  store.dispatch(right());
+  cursorRenderer.render(store.getState().cursor);
 });

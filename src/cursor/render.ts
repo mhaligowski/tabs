@@ -1,26 +1,7 @@
 import { Rect, Svg } from "@svgdotjs/svg.js";
-import { config } from "./config";
+import { config } from "../config";
+import { Cursor } from "./cursor";
 
-class Cursor {
-  private _stringNo: number;
-  private _position: number;
-
-  public get stringNo(): number {
-    return this._stringNo;
-  }
-
-  public set stringNo(stringNo: number) {
-    this._stringNo = stringNo;
-  }
-
-  public get position(): number {
-    return this._position;
-  }
-
-  public set position(position: number) {
-    this._position = position;
-  }
-}
 class SVGCursorRenderer {
   private elem: Rect;
 
@@ -39,4 +20,4 @@ class SVGCursorRenderer {
   }
 }
 
-export { Cursor, SVGCursorRenderer };
+export { SVGCursorRenderer };
