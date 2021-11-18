@@ -2,8 +2,9 @@ import keys from "mousetrap";
 import { configureStore } from "@reduxjs/toolkit";
 import { Svg, SVG, Text } from "@svgdotjs/svg.js";
 
-import { Symbol, Tabulature } from "./tab/types";
+import { Tabulature } from "./tab/types";
 import tabulatureSlice, { setTabulature } from "./tab/slice";
+import { SVGTabulatureRenderer } from "./tab/render";
 
 import { Cursor } from "./cursor/cursor";
 import { SVGCursorRenderer } from "./cursor/render";
@@ -16,51 +17,10 @@ const store = configureStore({
 // Some constants
 // TODO: get rid of these in favor of the config.ts
 const VERTICAL_STRING_SPACE: number = 20;
-const VERTICAL_PADDING = VERTICAL_STRING_SPACE;
-const STRING_COUNT: number = 6;
-const FONT_HEIGHT = new Text().text("0123456789").font({ size: 20 }).bbox().h;
 
 var draw: Svg = SVG()
   .addTo("#root")
   .size(600, 100 + VERTICAL_STRING_SPACE * 2); // VERTICAL_SPACE for vertical margin
-
-// Draw vertical line
-draw
-  .line(
-    0,
-    VERTICAL_PADDING,
-    0,
-    (STRING_COUNT - 1) * VERTICAL_STRING_SPACE + VERTICAL_PADDING
-  )
-  .stroke({ color: "#000", width: 15 });
-
-draw
-  .line(
-    12,
-    VERTICAL_PADDING,
-    12,
-    (STRING_COUNT - 1) * VERTICAL_STRING_SPACE + VERTICAL_PADDING
-  )
-  .stroke({ color: "#000", width: 2 });
-
-// Draw strings
-for (var i = 0; i < STRING_COUNT; i++) {
-  const top = VERTICAL_STRING_SPACE * i + VERTICAL_PADDING;
-  draw.line(0, top, 600, top).stroke({ color: "#000", width: 1 });
-}
-
-const put = (draw: Svg, position: number, pluck: Symbol) =>
-  draw
-    .plain(pluck.fret?.toString())
-    .font({ fill: "#000", size: 20 })
-    .move(
-      position,
-      VERTICAL_STRING_SPACE * pluck.string_no +
-        VERTICAL_PADDING -
-        FONT_HEIGHT / 2
-    );
-const render = (draw: Svg, tab: Tabulature) =>
-  tab.symbols.map((p, i) => put(draw, (i + 1) * 40, p));
 
 const parseFromLocation = (location: Location): Tabulature | null => {
   const search = location.search;
@@ -86,10 +46,14 @@ if (tabToRender) {
 
 store.dispatch(goTo({ stringNo: 5, position: 0 } as Cursor));
 
+const tabRenderer: SVGTabulatureRenderer = SVGTabulatureRenderer.create();
+tabRenderer.drawStaff(draw);
+
 const cursorRenderer: SVGCursorRenderer = new SVGCursorRenderer(draw);
 cursorRenderer.render(store.getState().cursor);
 
-render(draw, store.getState().tabulature);
+tabRenderer.render(draw, store.getState().tabulature);
+
 keys.bind("up", () => {
   store.dispatch(up());
   cursorRenderer.render(store.getState().cursor);
@@ -107,3 +71,6 @@ keys.bind("right", () => {
   cursorRenderer.render(store.getState().cursor);
 });
 
+const numeric = Array.from({ length: 10 }, (_, i) => i.toString());
+console.log(numeric);
+keys.bind(numeric, (e, combo) => console.log(e, combo));

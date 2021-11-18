@@ -9,9 +9,13 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
     "@types/mousetrap": "^1.6.8",
     "@webpack-cli/generators": "^2.4.1",
+    "babel-jest": "^27.3.1",
     "html-webpack-plugin": "^5.5.0",
+    "jest": "^27.3.1",
     "mini-css-extract-plugin": "^2.4.4",
     "ts-loader": "^9.2.6",
     "webpack": "^5.62.1",
