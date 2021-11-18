@@ -72,5 +72,4 @@ keys.bind("right", () => {
 });
 
 const numeric = Array.from({ length: 10 }, (_, i) => i.toString());
-console.log(numeric);
 keys.bind(numeric, (e, combo) => console.log(e, combo));
