@@ -2,40 +2,25 @@ import keys from "mousetrap";
 import { configureStore } from "@reduxjs/toolkit";
 import { Svg, SVG, Text } from "@svgdotjs/svg.js";
 
-import { Tabulature } from "./tab/types";
 import tabulatureSlice, { setTabulature } from "./tab/slice";
+import { parseFromLocation } from "./tab/serialize";
 import { SVGTabulatureRenderer } from "./tab/render";
 
 import { Cursor } from "./cursor/cursor";
 import { SVGCursorRenderer } from "./cursor/render";
 import cursorSlice, { up, down, left, right, goTo } from "./cursor/slice";
+import { config } from "./config";
 
+/**
+ * Set up state management.
+ */
 const store = configureStore({
   reducer: { cursor: cursorSlice, tabulature: tabulatureSlice },
 });
 
-// Some constants
-// TODO: get rid of these in favor of the config.ts
-const VERTICAL_STRING_SPACE: number = 20;
-
 var draw: Svg = SVG()
   .addTo("#root")
-  .size(600, 100 + VERTICAL_STRING_SPACE * 2); // VERTICAL_SPACE for vertical margin
-
-const parseFromLocation = (location: Location): Tabulature | null => {
-  const search = location.search;
-  if (search.length === 0) {
-    return null;
-  }
-  const searchParams = new URLSearchParams(search);
-  if (!searchParams.has("tab")) {
-    return null;
-  }
-  const serializedTab = searchParams.get("tab");
-  const stringifiedTab = window.atob(serializedTab);
-
-  return JSON.parse(stringifiedTab);
-};
+  .size(600, 100 + config.verticalStringSpace * 2);
 
 // Default:
 // eyJzeW1ib2xzIjpbeyJzdHJpbmdfbm8iOjUsImZyZXQiOjV9LHsic3RyaW5nX25vIjo1LCJmcmV0Ijo4fSx7InN0cmluZ19ubyI6NCwiZnJldCI6NX0seyJzdHJpbmdfbm8iOjQsImZyZXQiOjd9LHsic3RyaW5nX25vIjozLCJmcmV0Ijo1fSx7InN0cmluZ19ubyI6MywiZnJldCI6N30seyJzdHJpbmdfbm8iOjIsImZyZXQiOjV9LHsic3RyaW5nX25vIjoyLCJmcmV0Ijo3fSx7InN0cmluZ19ubyI6MSwiZnJldCI6NX0seyJzdHJpbmdfbm8iOjEsImZyZXQiOjh9LHsic3RyaW5nX25vIjowLCJmcmV0Ijo1fSx7InN0cmluZ19ubyI6MCwiZnJldCI6OH1dfQ==
