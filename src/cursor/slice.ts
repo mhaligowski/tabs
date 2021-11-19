@@ -6,7 +6,6 @@ const cursorSlice = createSlice({
   initialState: { stringNo: 0, position: 0 } as Cursor,
   reducers: {
     up: (state) => {
-      console.log(state);
       state.stringNo -= 1;
     },
     down: (state) => {

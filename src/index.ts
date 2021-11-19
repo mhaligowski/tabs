@@ -1,10 +1,10 @@
 import keys from "mousetrap";
 import { configureStore } from "@reduxjs/toolkit";
-import { Svg, SVG, Text } from "@svgdotjs/svg.js";
+import { Svg, SVG } from "@svgdotjs/svg.js";
 
-import tabulatureSlice, { setTabulature } from "./tab/slice";
+import tabulatureSlice, { setTabulature, set } from "./tab/slice";
 import { parseFromLocation } from "./tab/serialize";
-import { SVGTabulatureRenderer } from "./tab/render";
+import { SVGSymbolRenderer, SVGTabulatureRenderer } from "./tab/render";
 
 import { Cursor } from "./cursor/cursor";
 import { SVGCursorRenderer } from "./cursor/render";
@@ -22,8 +22,6 @@ var draw: Svg = SVG()
   .addTo("#root")
   .size(600, 100 + config.verticalStringSpace * 2);
 
-// Default:
-// eyJzeW1ib2xzIjpbeyJzdHJpbmdfbm8iOjUsImZyZXQiOjV9LHsic3RyaW5nX25vIjo1LCJmcmV0Ijo4fSx7InN0cmluZ19ubyI6NCwiZnJldCI6NX0seyJzdHJpbmdfbm8iOjQsImZyZXQiOjd9LHsic3RyaW5nX25vIjozLCJmcmV0Ijo1fSx7InN0cmluZ19ubyI6MywiZnJldCI6N30seyJzdHJpbmdfbm8iOjIsImZyZXQiOjV9LHsic3RyaW5nX25vIjoyLCJmcmV0Ijo3fSx7InN0cmluZ19ubyI6MSwiZnJldCI6NX0seyJzdHJpbmdfbm8iOjEsImZyZXQiOjh9LHsic3RyaW5nX25vIjowLCJmcmV0Ijo1fSx7InN0cmluZ19ubyI6MCwiZnJldCI6OH1dfQ==
 const tabToRender = parseFromLocation(window.location);
 if (tabToRender) {
   store.dispatch(setTabulature(tabToRender));
@@ -57,4 +55,20 @@ keys.bind("right", () => {
 });
 
 const numeric = Array.from({ length: 10 }, (_, i) => i.toString());
-keys.bind(numeric, (e, combo) => console.log(e, combo));
+keys.bind(numeric, (e, combo) => {
+  const clickedKey = combo;
+  const currentPosition = store.getState().cursor.position;
+  store.dispatch(
+    set({
+      position: store.getState().cursor.position,
+      string_no: store.getState().cursor.stringNo,
+      fret: parseInt(clickedKey),
+    })
+  );
+
+  const newSymbol = {
+    string_no: store.getState().cursor.stringNo,
+    fret: parseInt(clickedKey),
+  };
+  new SVGSymbolRenderer().render(draw, currentPosition, newSymbol);
+});

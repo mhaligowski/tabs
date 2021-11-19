@@ -6,16 +6,32 @@ import { Symbol, SymbolGroup, Tabulature } from "./types";
 class SVGSymbolRenderer {
   render(draw: Svg, position: number, symbol: Symbol): void {
     const id = `s-${position}-${symbol.string_no}`;
-    draw
-      .plain(symbol.fret?.toString())
-      .id(id)
-      .font({ fill: "#000", size: 20 })
-      .move(
-        (position + 1) * 40,
-        config.verticalStringSpace * symbol.string_no +
-          config.verticalPadding -
-          config.fontHeight / 2
+    const elem = draw.findOne(`#${id}`);
+    if (draw.findOne(`#${id}`)) {
+      elem.replace(
+        draw
+          .plain(symbol.fret?.toString())
+          .id(id)
+          .font({ fill: "#000", size: 20 })
+          .move(
+            (position + 1) * 40,
+            config.verticalStringSpace * symbol.string_no +
+              config.verticalPadding -
+              config.fontHeight / 2
+          )
       );
+    } else {
+      draw
+        .plain(symbol.fret?.toString())
+        .id(id)
+        .font({ fill: "#000", size: 20 })
+        .move(
+          (position + 1) * 40,
+          config.verticalStringSpace * symbol.string_no +
+            config.verticalPadding -
+            config.fontHeight / 2
+        );
+    }
   }
 }
 
@@ -84,4 +100,4 @@ class SVGTabulatureRenderer {
   }
 }
 
-export { SVGTabulatureRenderer };
+export { SVGTabulatureRenderer, SVGSymbolRenderer };

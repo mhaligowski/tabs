@@ -18,16 +18,34 @@ const defaultTab: Tabulature = {
   ],
 };
 
-const Tabulature = createSlice({
+type SetActionPayload = {
+  position: number;
+  string_no: number;
+  fret: number;
+};
+
+const TabulatureSlice = createSlice({
   name: "tabulature",
   initialState: defaultTab,
   reducers: {
     setTabulature: (state, action: PayloadAction<Tabulature>) => {
       state = action.payload;
     },
-    put: (state, action) => {},
+    set: (state, action: PayloadAction<SetActionPayload>) => {
+      const { position, fret, string_no } = action.payload;
+      const pos = state.contents[position];
+      const symbols = pos.symbols;
+
+      const idx = symbols.findIndex((s) => s.string_no === string_no);
+
+      if (idx === -1) {
+        symbols.push({ string_no, fret });
+      } else {
+        symbols[idx] = { string_no, fret };
+      }
+    },
   },
 });
 
-export const { setTabulature } = Tabulature.actions;
-export default Tabulature.reducer;
+export const { setTabulature, set } = TabulatureSlice.actions;
+export default TabulatureSlice.reducer;
