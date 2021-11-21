@@ -37,19 +37,19 @@ cursorRenderer.render(store.getState().cursor);
 
 tabRenderer.render(draw, store.getState().tabulature);
 
-keys.bind("up", () => {
+keys.bind(["up", "k"], () => {
   store.dispatch(up());
   cursorRenderer.render(store.getState().cursor);
 });
-keys.bind("down", () => {
+keys.bind(["down", "j"], () => {
   store.dispatch(down());
   cursorRenderer.render(store.getState().cursor);
 });
-keys.bind("left", () => {
+keys.bind(["left", "h"], () => {
   store.dispatch(left());
   cursorRenderer.render(store.getState().cursor);
 });
-keys.bind("right", () => {
+keys.bind(["right", "l"], () => {
   store.dispatch(right());
   cursorRenderer.render(store.getState().cursor);
 });
