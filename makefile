@@ -17,4 +17,7 @@ clean:
 deploy: dist
 	$(FB) $@
 
-.PHONY: clean dist deploy
+test:
+	$(NPX) jest
+
+.PHONY: clean dist deploy test serve
