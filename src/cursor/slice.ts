@@ -3,13 +3,13 @@ import { Cursor } from "./cursor";
 
 const cursorSlice = createSlice({
   name: "cursor",
-  initialState: { stringNo: 0, position: 0 } as Cursor,
+  initialState: { string_no: 0, position: 0 } as Cursor,
   reducers: {
     up: (state) => {
-      state.stringNo -= 1;
+      state.string_no -= 1;
     },
     down: (state) => {
-      state.stringNo += 1;
+      state.string_no += 1;
     },
     left: (state) => {
       state.position -= 1;
@@ -19,7 +19,7 @@ const cursorSlice = createSlice({
     },
     goTo: (state, action: PayloadAction<Cursor>) => {
       state.position = action.payload.position;
-      state.stringNo = action.payload.stringNo;
+      state.string_no = action.payload.string_no;
     },
   },
 });

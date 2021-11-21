@@ -16,7 +16,7 @@ class SVGCursorRenderer {
   render(cursor: Cursor): void {
     this.elem
       .attr("visible", "visible")
-      .move(config.left(cursor.position), config.top(cursor.stringNo));
+      .move(config.left(cursor.position), config.top(cursor.string_no));
   }
 }
 

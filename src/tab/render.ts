@@ -5,13 +5,12 @@ import { Symbol, SymbolGroup, Tabulature } from "./types";
 
 class SVGSymbolRenderer {
   render(draw: Svg, position: number, symbol: Symbol): void {
-    const id = `s-${position}-${symbol.string_no}`;
-    const elem = draw.findOne(`#${id}`);
-    if (draw.findOne(`#${id}`)) {
+    const elem = draw.findOne(`#${this.id(position, symbol.string_no)}`);
+    if (elem) {
       elem.replace(
         draw
           .plain(symbol.fret?.toString())
-          .id(id)
+          .id(this.id(position, symbol.string_no))
           .font({ fill: "#000", size: 20 })
           .move(
             (position + 1) * 40,
@@ -23,7 +22,7 @@ class SVGSymbolRenderer {
     } else {
       draw
         .plain(symbol.fret?.toString())
-        .id(id)
+        .id(this.id(position, symbol.string_no))
         .font({ fill: "#000", size: 20 })
         .move(
           (position + 1) * 40,
@@ -33,6 +32,15 @@ class SVGSymbolRenderer {
         );
     }
   }
+
+  remove(draw: Svg, position: number, string_no: number) {
+    const elem = draw.findOne(`#${this.id(position, string_no)}`);
+    console.log(elem);
+    elem?.remove();
+  }
+
+  private id = (position: number, string_no: number) =>
+    `s-${position}-${string_no}`;
 }
 
 class SVGGroupRenderer {

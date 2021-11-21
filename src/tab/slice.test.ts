@@ -1,4 +1,4 @@
-import reducer, { set } from "./slice";
+import reducer, { set, remove } from "./slice";
 
 it("should return the initial state", () => {
   expect(reducer(undefined, {})).not.toBeUndefined();
@@ -53,4 +53,21 @@ it("should replace an existing string value", () => {
   };
 
   expect(result).toEqual(expected);
+});
+
+it("should remove an existing value", () => {
+  const state = {
+    contents: [
+      {
+        symbols: [
+          { string_no: 5, fret: 5 },
+          { string_no: 3, fret: 12 },
+        ],
+      },
+      { symbols: [{ string_no: 5, fret: 8 }] },
+      { symbols: [{ string_no: 4, fret: 5 }] },
+    ],
+  };
+
+  const result = reducer(state, remove({ string_no: 3, position: 0 }));
 });

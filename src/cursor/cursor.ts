@@ -6,12 +6,12 @@ class Cursor {
   private _stringNo: number;
   private _position: number;
 
-  public get stringNo(): number {
+  public get string_no(): number {
     return this._stringNo;
   }
 
-  public set stringNo(stringNo: number) {
-    this._stringNo = stringNo;
+  public set string_no(string_no: number) {
+    this._stringNo = string_no;
   }
 
   public get position(): number {

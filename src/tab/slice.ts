@@ -24,6 +24,11 @@ type SetActionPayload = {
   fret: number;
 };
 
+type RemoveActionPayload = {
+  position: number;
+  string_no: number;
+};
+
 const TabulatureSlice = createSlice({
   name: "tabulature",
   initialState: defaultTab,
@@ -44,8 +49,15 @@ const TabulatureSlice = createSlice({
         symbols[idx] = { string_no, fret };
       }
     },
+    remove: (state, action: PayloadAction<RemoveActionPayload>) => {
+      const { position, string_no } = action.payload;
+      const pos = state.contents[position];
+      state.contents[position].symbols = pos.symbols.filter(
+        (s) => s.string_no !== string_no
+      );
+    },
   },
 });
 
-export const { setTabulature, set } = TabulatureSlice.actions;
+export const { setTabulature, set, remove } = TabulatureSlice.actions;
 export default TabulatureSlice.reducer;

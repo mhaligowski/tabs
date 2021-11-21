@@ -2,7 +2,7 @@ import keys from "mousetrap";
 import { configureStore } from "@reduxjs/toolkit";
 import { Svg, SVG } from "@svgdotjs/svg.js";
 
-import tabulatureSlice, { setTabulature, set } from "./tab/slice";
+import tabulatureSlice, { setTabulature, set, remove } from "./tab/slice";
 import { parseFromLocation } from "./tab/serialize";
 import { SVGSymbolRenderer, SVGTabulatureRenderer } from "./tab/render";
 
@@ -27,7 +27,7 @@ if (tabToRender) {
   store.dispatch(setTabulature(tabToRender));
 }
 
-store.dispatch(goTo({ stringNo: 5, position: 0 } as Cursor));
+store.dispatch(goTo({ string_no: 5, position: 0 } as Cursor));
 
 const tabRenderer: SVGTabulatureRenderer = SVGTabulatureRenderer.create();
 tabRenderer.drawStaff(draw);
@@ -61,14 +61,22 @@ keys.bind(numeric, (e, combo) => {
   store.dispatch(
     set({
       position: store.getState().cursor.position,
-      string_no: store.getState().cursor.stringNo,
+      string_no: store.getState().cursor.string_no,
       fret: parseInt(clickedKey),
     })
   );
 
   const newSymbol = {
-    string_no: store.getState().cursor.stringNo,
+    string_no: store.getState().cursor.string_no,
     fret: parseInt(clickedKey),
   };
   new SVGSymbolRenderer().render(draw, currentPosition, newSymbol);
+});
+
+keys.bind("x", (e, combo) => {
+  const clickedKey = combo;
+  const cursor = store.getState().cursor;
+
+  store.dispatch(remove(cursor));
+  new SVGSymbolRenderer().remove(draw, cursor.position, cursor.string_no);
 });
