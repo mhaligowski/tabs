@@ -7,24 +7,24 @@ it("should return the initial state", () => {
 it("should set the empty position", () => {
   const state = {
     contents: [
-      { symbols: [{ string_no: 5, fret: 5 }] },
-      { symbols: [{ string_no: 5, fret: 8 }] },
-      { symbols: [{ string_no: 4, fret: 5 }] },
+      { symbols: [{ stringNo: 5, fret: 5 }] },
+      { symbols: [{ stringNo: 5, fret: 8 }] },
+      { symbols: [{ stringNo: 4, fret: 5 }] },
     ],
   };
 
-  const result = reducer(state, set({ fret: 12, string_no: 3, position: 0 }));
+  const result = reducer(state, set({ fret: 12, stringNo: 3, position: 0 }));
 
   const expected = {
     contents: [
       {
         symbols: [
-          { string_no: 5, fret: 5 },
-          { string_no: 3, fret: 12 },
+          { stringNo: 5, fret: 5 },
+          { stringNo: 3, fret: 12 },
         ],
       },
-      { symbols: [{ string_no: 5, fret: 8 }] },
-      { symbols: [{ string_no: 4, fret: 5 }] },
+      { symbols: [{ stringNo: 5, fret: 8 }] },
+      { symbols: [{ stringNo: 4, fret: 5 }] },
     ],
   };
 
@@ -34,21 +34,21 @@ it("should set the empty position", () => {
 it("should replace an existing string value", () => {
   const state = {
     contents: [
-      { symbols: [{ string_no: 5, fret: 5 }] },
-      { symbols: [{ string_no: 5, fret: 8 }] },
-      { symbols: [{ string_no: 4, fret: 5 }] },
+      { symbols: [{ stringNo: 5, fret: 5 }] },
+      { symbols: [{ stringNo: 5, fret: 8 }] },
+      { symbols: [{ stringNo: 4, fret: 5 }] },
     ],
   };
 
-  const result = reducer(state, set({ fret: 12, string_no: 5, position: 1 }));
+  const result = reducer(state, set({ fret: 12, stringNo: 5, position: 1 }));
 
   const expected = {
     contents: [
       {
-        symbols: [{ string_no: 5, fret: 5 }],
+        symbols: [{ stringNo: 5, fret: 5 }],
       },
-      { symbols: [{ string_no: 5, fret: 12 }] },
-      { symbols: [{ string_no: 4, fret: 5 }] },
+      { symbols: [{ stringNo: 5, fret: 12 }] },
+      { symbols: [{ stringNo: 4, fret: 5 }] },
     ],
   };
 
@@ -60,14 +60,14 @@ it("should remove an existing value", () => {
     contents: [
       {
         symbols: [
-          { string_no: 5, fret: 5 },
-          { string_no: 3, fret: 12 },
+          { stringNo: 5, fret: 5 },
+          { stringNo: 3, fret: 12 },
         ],
       },
-      { symbols: [{ string_no: 5, fret: 8 }] },
-      { symbols: [{ string_no: 4, fret: 5 }] },
+      { symbols: [{ stringNo: 5, fret: 8 }] },
+      { symbols: [{ stringNo: 4, fret: 5 }] },
     ],
   };
 
-  const result = reducer(state, remove({ string_no: 3, position: 0 }));
+  const result = reducer(state, remove({ stringNo: 3, position: 0 }));
 });
