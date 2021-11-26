@@ -27,7 +27,7 @@ if (tabToRender) {
   store.dispatch(setTabulature(tabToRender));
 }
 
-store.dispatch(goTo({ string_no: 5, position: 0 } as Cursor));
+store.dispatch(goTo({ stringNo: 5, position: 0 } as Cursor));
 
 const tabRenderer: SVGTabulatureRenderer = SVGTabulatureRenderer.create();
 tabRenderer.drawStaff(draw);
@@ -38,19 +38,19 @@ cursorRenderer.render(store.getState().cursor);
 tabRenderer.render(draw, store.getState().tabulature);
 
 keys.bind(["up", "k"], () => {
-  store.dispatch(up());
+  store.dispatch(up({ tab: store.getState().tabulature }));
   cursorRenderer.render(store.getState().cursor);
 });
 keys.bind(["down", "j"], () => {
-  store.dispatch(down());
+  store.dispatch(down({ tab: store.getState().tabulature }));
   cursorRenderer.render(store.getState().cursor);
 });
 keys.bind(["left", "h"], () => {
-  store.dispatch(left());
+  store.dispatch(left({ tab: store.getState().tabulature }));
   cursorRenderer.render(store.getState().cursor);
 });
 keys.bind(["right", "l"], () => {
-  store.dispatch(right());
+  store.dispatch(right({ tab: store.getState().tabulature }));
   cursorRenderer.render(store.getState().cursor);
 });
 
@@ -61,13 +61,13 @@ keys.bind(numeric, (e, combo) => {
   store.dispatch(
     set({
       position: store.getState().cursor.position,
-      string_no: store.getState().cursor.string_no,
+      stringNo: store.getState().cursor.stringNo,
       fret: parseInt(clickedKey),
     })
   );
 
   const newSymbol = {
-    string_no: store.getState().cursor.string_no,
+    string_no: store.getState().cursor.stringNo,
     fret: parseInt(clickedKey),
   };
   new SVGSymbolRenderer().render(draw, currentPosition, newSymbol);
@@ -78,5 +78,5 @@ keys.bind("x", (e, combo) => {
   const cursor = store.getState().cursor;
 
   store.dispatch(remove(cursor));
-  new SVGSymbolRenderer().remove(draw, cursor.position, cursor.string_no);
+  new SVGSymbolRenderer().remove(draw, cursor.position, cursor.stringNo);
 });

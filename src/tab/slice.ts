@@ -2,31 +2,32 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Tabulature } from "./types";
 
 const defaultTab: Tabulature = {
+  stringCount: 6,
   contents: [
-    { symbols: [{ string_no: 5, fret: 5 }] },
-    { symbols: [{ string_no: 5, fret: 8 }] },
-    { symbols: [{ string_no: 4, fret: 5 }] },
-    { symbols: [{ string_no: 4, fret: 7 }] },
-    { symbols: [{ string_no: 3, fret: 5 }] },
-    { symbols: [{ string_no: 3, fret: 7 }] },
-    { symbols: [{ string_no: 2, fret: 5 }] },
-    { symbols: [{ string_no: 2, fret: 7 }] },
-    { symbols: [{ string_no: 1, fret: 5 }] },
-    { symbols: [{ string_no: 1, fret: 8 }] },
-    { symbols: [{ string_no: 0, fret: 5 }] },
-    { symbols: [{ string_no: 0, fret: 8 }] },
+    { symbols: [{ stringNo: 5, fret: 5 }] },
+    { symbols: [{ stringNo: 5, fret: 8 }] },
+    { symbols: [{ stringNo: 4, fret: 5 }] },
+    { symbols: [{ stringNo: 4, fret: 7 }] },
+    { symbols: [{ stringNo: 3, fret: 5 }] },
+    { symbols: [{ stringNo: 3, fret: 7 }] },
+    { symbols: [{ stringNo: 2, fret: 5 }] },
+    { symbols: [{ stringNo: 2, fret: 7 }] },
+    { symbols: [{ stringNo: 1, fret: 5 }] },
+    { symbols: [{ stringNo: 1, fret: 8 }] },
+    { symbols: [{ stringNo: 0, fret: 5 }] },
+    { symbols: [{ stringNo: 0, fret: 8 }] },
   ],
 };
 
 type SetActionPayload = {
   position: number;
-  string_no: number;
+  stringNo: number;
   fret: number;
 };
 
 type RemoveActionPayload = {
   position: number;
-  string_no: number;
+  stringNo: number;
 };
 
 const TabulatureSlice = createSlice({
@@ -37,23 +38,23 @@ const TabulatureSlice = createSlice({
       state = action.payload;
     },
     set: (state, action: PayloadAction<SetActionPayload>) => {
-      const { position, fret, string_no } = action.payload;
+      const { position, fret, stringNo } = action.payload;
       const pos = state.contents[position];
       const symbols = pos.symbols;
 
-      const idx = symbols.findIndex((s) => s.string_no === string_no);
+      const idx = symbols.findIndex((s) => s.stringNo === stringNo);
 
       if (idx === -1) {
-        symbols.push({ string_no, fret });
+        symbols.push({ stringNo, fret });
       } else {
-        symbols[idx] = { string_no, fret };
+        symbols[idx] = { stringNo, fret };
       }
     },
     remove: (state, action: PayloadAction<RemoveActionPayload>) => {
-      const { position, string_no } = action.payload;
+      const { position, stringNo } = action.payload;
       const pos = state.contents[position];
       state.contents[position].symbols = pos.symbols.filter(
-        (s) => s.string_no !== string_no
+        (s) => s.stringNo !== stringNo
       );
     },
   },

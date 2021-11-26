@@ -5,16 +5,16 @@ import { Symbol, SymbolGroup, Tabulature } from "./types";
 
 class SVGSymbolRenderer {
   render(draw: Svg, position: number, symbol: Symbol): void {
-    const elem = draw.findOne(`#${this.id(position, symbol.string_no)}`);
+    const elem = draw.findOne(`#${this.id(position, symbol.stringNo)}`);
     if (elem) {
       elem.replace(
         draw
           .plain(symbol.fret?.toString())
-          .id(this.id(position, symbol.string_no))
+          .id(this.id(position, symbol.stringNo))
           .font({ fill: "#000", size: 20 })
           .move(
             (position + 1) * 40,
-            config.verticalStringSpace * symbol.string_no +
+            config.verticalStringSpace * symbol.stringNo +
               config.verticalPadding -
               config.fontHeight / 2
           )
@@ -22,25 +22,25 @@ class SVGSymbolRenderer {
     } else {
       draw
         .plain(symbol.fret?.toString())
-        .id(this.id(position, symbol.string_no))
+        .id(this.id(position, symbol.stringNo))
         .font({ fill: "#000", size: 20 })
         .move(
           (position + 1) * 40,
-          config.verticalStringSpace * symbol.string_no +
+          config.verticalStringSpace * symbol.stringNo +
             config.verticalPadding -
             config.fontHeight / 2
         );
     }
   }
 
-  remove(draw: Svg, position: number, string_no: number) {
-    const elem = draw.findOne(`#${this.id(position, string_no)}`);
+  remove(draw: Svg, position: number, stringNo: number) {
+    const elem = draw.findOne(`#${this.id(position, stringNo)}`);
     console.log(elem);
     elem?.remove();
   }
 
-  private id = (position: number, string_no: number) =>
-    `s-${position}-${string_no}`;
+  private id = (position: number, stringNo: number) =>
+    `s-${position}-${stringNo}`;
 }
 
 class SVGGroupRenderer {

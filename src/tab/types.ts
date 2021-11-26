@@ -3,7 +3,7 @@
  */
 export type Symbol = {
   id?: string;
-  string_no?: number;
+  stringNo?: number;
   fret?: number;
 };
 
@@ -13,5 +13,6 @@ export type SymbolGroup = {
 };
 
 export type Tabulature = {
+  stringCount: number;
   contents: SymbolGroup[];
 };
