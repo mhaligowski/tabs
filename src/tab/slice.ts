@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Tabulature } from "./types";
+import { right, left } from "../cursor/slice";
 
 const defaultTab: Tabulature = {
   stringCount: 6,
@@ -30,6 +31,13 @@ type RemoveActionPayload = {
   stringNo: number;
 };
 
+const MoveHandler = (state: any, action: any) => {
+  const { tabulature, cursor } = action.payload;
+  if (tabulature.contents[cursor.position].symbols.length === 0) {
+    state.contents.splice(cursor.position, 1);
+  }
+};
+
 const TabulatureSlice = createSlice({
   name: "tabulature",
   initialState: defaultTab,
@@ -57,6 +65,9 @@ const TabulatureSlice = createSlice({
         (s) => s.stringNo !== stringNo
       );
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(right, MoveHandler).addCase(left, MoveHandler);
   },
 });
 

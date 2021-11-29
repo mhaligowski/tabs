@@ -1,9 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Cursor } from "./cursor";
+
 import { Tabulature } from "../tab/types";
 
 type MoveCursorPayload = {
-  tab: Tabulature;
+  cursor: Cursor;
+  tabulature: Tabulature;
 };
 
 const cursorSlice = createSlice({
@@ -16,7 +18,7 @@ const cursorSlice = createSlice({
       }
     },
     down: (state, action: PayloadAction<MoveCursorPayload>) => {
-      if (state.stringNo + 1 < action.payload.tab.stringCount)
+      if (state.stringNo + 1 < action.payload.tabulature.stringCount)
         state.stringNo += 1;
     },
     left: (state, action: PayloadAction<MoveCursorPayload>) => {
@@ -25,7 +27,7 @@ const cursorSlice = createSlice({
       }
     },
     right: (state, action: PayloadAction<MoveCursorPayload>) => {
-      if (action.payload.tab.contents.length > state.position + 1) {
+      if (action.payload.tabulature.contents.length > state.position + 1) {
         state.position += 1;
       }
     },

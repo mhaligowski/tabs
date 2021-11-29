@@ -4,12 +4,11 @@ import { Svg, SVG } from "@svgdotjs/svg.js";
 
 import tabulatureSlice, { setTabulature, set, remove } from "./tab/slice";
 import { parseFromLocation } from "./tab/serialize";
-import { SVGSymbolRenderer, SVGTabulatureRenderer } from "./tab/render";
 
 import { Cursor } from "./cursor/cursor";
-import { SVGCursorRenderer } from "./cursor/render";
 import cursorSlice, { up, down, left, right, goTo } from "./cursor/slice";
 import { config } from "./config";
+import { SvgRenderer } from "./render";
 
 /**
  * Set up state management.
@@ -29,29 +28,30 @@ if (tabToRender) {
 
 store.dispatch(goTo({ stringNo: 5, position: 0 } as Cursor));
 
-const tabRenderer: SVGTabulatureRenderer = SVGTabulatureRenderer.create();
-tabRenderer.drawStaff(draw);
-
-const cursorRenderer: SVGCursorRenderer = new SVGCursorRenderer(draw);
-cursorRenderer.render(store.getState().cursor);
-
-tabRenderer.render(draw, store.getState().tabulature);
+const renderer = new SvgRenderer(draw);
+renderer.drawOrRefreshStaff();
+renderer.drawOrRefreshTabulature(store.getState().tabulature);
+renderer.refreshCursor(store.getState().cursor);
 
 keys.bind(["up", "k"], () => {
-  store.dispatch(up({ tab: store.getState().tabulature }));
-  cursorRenderer.render(store.getState().cursor);
+  store.dispatch(up(store.getState()));
+  renderer.drawOrRefreshTabulature(store.getState().tabulature);
+  renderer.refreshCursor(store.getState().cursor);
 });
 keys.bind(["down", "j"], () => {
-  store.dispatch(down({ tab: store.getState().tabulature }));
-  cursorRenderer.render(store.getState().cursor);
+  store.dispatch(down(store.getState()));
+  renderer.drawOrRefreshTabulature(store.getState().tabulature);
+  renderer.refreshCursor(store.getState().cursor);
 });
 keys.bind(["left", "h"], () => {
-  store.dispatch(left({ tab: store.getState().tabulature }));
-  cursorRenderer.render(store.getState().cursor);
+  store.dispatch(left(store.getState()));
+  renderer.drawOrRefreshTabulature(store.getState().tabulature);
+  renderer.refreshCursor(store.getState().cursor);
 });
 keys.bind(["right", "l"], () => {
-  store.dispatch(right({ tab: store.getState().tabulature }));
-  cursorRenderer.render(store.getState().cursor);
+  store.dispatch(right(store.getState()));
+  renderer.drawOrRefreshTabulature(store.getState().tabulature);
+  renderer.refreshCursor(store.getState().cursor);
 });
 
 const numeric = Array.from({ length: 10 }, (_, i) => i.toString());
@@ -66,11 +66,11 @@ keys.bind(numeric, (e, combo) => {
     })
   );
 
-  const newSymbol = {
-    string_no: store.getState().cursor.stringNo,
-    fret: parseInt(clickedKey),
-  };
-  new SVGSymbolRenderer().render(draw, currentPosition, newSymbol);
+  // TODO: Do the symbols!!!
+  renderer.drawOrRefreshGroup(
+    currentPosition,
+    store.getState().tabulature.contents[currentPosition]
+  );
 });
 
 keys.bind("x", (e, combo) => {
@@ -78,5 +78,8 @@ keys.bind("x", (e, combo) => {
   const cursor = store.getState().cursor;
 
   store.dispatch(remove(cursor));
-  new SVGSymbolRenderer().remove(draw, cursor.position, cursor.stringNo);
+  renderer.drawOrRefreshGroup(
+    cursor.position,
+    store.getState().tabulature.contents[cursor.position]
+  );
 });

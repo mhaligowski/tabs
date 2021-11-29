@@ -71,3 +71,7 @@ it("should remove an existing value", () => {
 
   const result = reducer(state, remove({ stringNo: 3, position: 0 }));
 });
+
+it("should keep an empty position after removing last character", () => {
+  
+});

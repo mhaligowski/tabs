@@ -14,3 +14,5 @@ export const parseFromLocation = (location: Location): Tabulature | null => {
 
   return JSON.parse(stringifiedTab);
 };
+
+
