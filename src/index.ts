@@ -29,27 +29,31 @@ if (tabToRender) {
 store.dispatch(goTo({ stringNo: 5, position: 0 } as Cursor));
 
 const renderer = new SvgRenderer(draw);
-renderer.drawOrRefreshStaff();
+renderer.drawOrRefreshStaff(store.getState().tabulature);
 renderer.drawOrRefreshTabulature(store.getState().tabulature);
 renderer.refreshCursor(store.getState().cursor);
 
 keys.bind(["up", "k"], () => {
   store.dispatch(up(store.getState()));
+  renderer.drawOrRefreshStaff(store.getState().tabulature);
   renderer.drawOrRefreshTabulature(store.getState().tabulature);
   renderer.refreshCursor(store.getState().cursor);
 });
 keys.bind(["down", "j"], () => {
   store.dispatch(down(store.getState()));
+  renderer.drawOrRefreshStaff(store.getState().tabulature);
   renderer.drawOrRefreshTabulature(store.getState().tabulature);
   renderer.refreshCursor(store.getState().cursor);
 });
 keys.bind(["left", "h"], () => {
   store.dispatch(left(store.getState()));
+  renderer.drawOrRefreshStaff(store.getState().tabulature);
   renderer.drawOrRefreshTabulature(store.getState().tabulature);
   renderer.refreshCursor(store.getState().cursor);
 });
 keys.bind(["right", "l"], () => {
   store.dispatch(right(store.getState()));
+  renderer.drawOrRefreshStaff(store.getState().tabulature);
   renderer.drawOrRefreshTabulature(store.getState().tabulature);
   renderer.refreshCursor(store.getState().cursor);
 });

@@ -40,35 +40,28 @@ class SvgRenderer {
   /**
    * Creates or lookup the staff group and draws the staff.
    */
-  drawOrRefreshStaff() {
+  drawOrRefreshStaff(tabulature: Tabulature) {
     const group: Group = this.findOrCreateStaffElem();
     group.clear();
 
+    const verticalLinesLength =
+      (config.stringsCount - 1) * config.verticalStringSpace +
+      config.verticalPadding;
+
     // Draw vertical lines
     group
-      .line(
-        0,
-        config.verticalPadding,
-        0,
-        (config.stringsCount - 1) * config.verticalStringSpace +
-          config.verticalPadding
-      )
+      .line(0, config.verticalPadding, 0, verticalLinesLength)
       .stroke({ color: "#000", width: 15 });
 
     group
-      .line(
-        12,
-        config.verticalPadding,
-        12,
-        (config.stringsCount - 1) * config.verticalStringSpace +
-          config.verticalPadding
-      )
+      .line(12, config.verticalPadding, 12, verticalLinesLength)
       .stroke({ color: "#000", width: 2 });
 
-    // Draw strings
+    const stringLength =
+      tabulature.contents.length * (config.fontWidth + 30) + 30;
     for (var i = 0; i < config.stringsCount; i++) {
       const top = config.verticalStringSpace * i + config.verticalPadding;
-      group.line(0, top, 600, top).stroke({ color: "#000", width: 1 });
+      group.line(0, top, stringLength, top).stroke({ color: "#000", width: 1 });
     }
   }
 
@@ -119,7 +112,6 @@ class SvgRenderer {
   }
 
   drawOrRefreshTabulature(tab: Tabulature) {
-
     this.findOrCreateContentGroup().clear();
     tab.contents.forEach((v, i) => {
       this.drawOrRefreshGroup(i, v);
