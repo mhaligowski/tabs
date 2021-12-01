@@ -2,7 +2,12 @@ import keys from "mousetrap";
 import { configureStore } from "@reduxjs/toolkit";
 import { Svg, SVG } from "@svgdotjs/svg.js";
 
-import tabulatureSlice, { setTabulature, set, remove } from "./tab/slice";
+import tabulatureSlice, {
+  setTabulature,
+  set,
+  remove,
+  insert,
+} from "./tab/slice";
 import { parseFromLocation } from "./tab/serialize";
 
 import { Cursor } from "./cursor/cursor";
@@ -47,12 +52,14 @@ keys.bind(["down", "j"], () => {
 });
 keys.bind(["left", "h"], () => {
   store.dispatch(left(store.getState()));
+
   renderer.drawOrRefreshStaff(store.getState().tabulature);
   renderer.drawOrRefreshTabulature(store.getState().tabulature);
   renderer.refreshCursor(store.getState().cursor);
 });
 keys.bind(["right", "l"], () => {
   store.dispatch(right(store.getState()));
+
   renderer.drawOrRefreshStaff(store.getState().tabulature);
   renderer.drawOrRefreshTabulature(store.getState().tabulature);
   renderer.refreshCursor(store.getState().cursor);
@@ -70,7 +77,7 @@ keys.bind(numeric, (e, combo) => {
     })
   );
 
-  // TODO: Do the symbols!!!
+  // TODO: Do the symbols: hammer-on, pull-offs, etc.!!!
   renderer.drawOrRefreshGroup(
     currentPosition,
     store.getState().tabulature.contents[currentPosition]
@@ -86,4 +93,24 @@ keys.bind("x", (e, combo) => {
     cursor.position,
     store.getState().tabulature.contents[cursor.position]
   );
+});
+
+keys.bind("a", (e, combo) => {
+  const { cursor } = store.getState();
+  store.dispatch(insert({ position: cursor.position + 1 }));
+
+  const { tabulature } = store.getState();
+  renderer.drawOrRefreshStaff(tabulature);
+  renderer.drawOrRefreshTabulature(tabulature);
+  renderer.refreshCursor(cursor);
+});
+
+keys.bind("i", (e, combo) => {
+  const { cursor } = store.getState();
+  store.dispatch(insert({ position: cursor.position }));
+
+  const { tabulature } = store.getState();
+  renderer.drawOrRefreshStaff(tabulature);
+  renderer.drawOrRefreshTabulature(tabulature);
+  renderer.refreshCursor(cursor);
 });

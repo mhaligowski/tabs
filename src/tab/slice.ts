@@ -31,6 +31,10 @@ type RemoveActionPayload = {
   stringNo: number;
 };
 
+type InsertActionPayload = {
+  position: number;
+};
+
 const MoveHandler = (state: any, action: any) => {
   const { tabulature, cursor } = action.payload;
   if (tabulature.contents[cursor.position].symbols.length === 0) {
@@ -65,11 +69,15 @@ const TabulatureSlice = createSlice({
         (s) => s.stringNo !== stringNo
       );
     },
+    insert: (state, action: PayloadAction<InsertActionPayload>) => {
+      const { position } = action.payload;
+      state.contents.splice(position, 0, { symbols: [] });
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(right, MoveHandler).addCase(left, MoveHandler);
   },
 });
 
-export const { setTabulature, set, remove } = TabulatureSlice.actions;
+export const { setTabulature, set, remove, insert } = TabulatureSlice.actions;
 export default TabulatureSlice.reducer;
