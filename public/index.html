@@ -7,9 +7,18 @@
 
     <title><%= htmlWebpackPlugin.options.title %></title>
     <script src="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.1/dist/svg.min.js"></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@17/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"
+    ></script>
   </head>
 
   <body>
+    <div id="app"></div>
     <div id="root"></div>
   </body>
 </html>

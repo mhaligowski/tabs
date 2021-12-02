@@ -1,6 +1,8 @@
 import keys from "mousetrap";
 import { configureStore } from "@reduxjs/toolkit";
 import { Svg, SVG } from "@svgdotjs/svg.js";
+import React from "react";
+import ReactDOM from "react-dom";
 
 import tabulatureSlice, {
   setTabulature,
@@ -10,6 +12,7 @@ import tabulatureSlice, {
 } from "./tab/slice";
 import { parseFromLocation } from "./tab/serialize";
 
+import { App } from "./app";
 import { Cursor } from "./cursor/cursor";
 import cursorSlice, { up, down, left, right, goTo } from "./cursor/slice";
 import { config } from "./config";
@@ -21,6 +24,8 @@ import { SvgRenderer } from "./render";
 const store = configureStore({
   reducer: { cursor: cursorSlice, tabulature: tabulatureSlice },
 });
+
+ReactDOM.render(App, document.getElementById("app"));
 
 var draw: Svg = SVG()
   .addTo("#root")
