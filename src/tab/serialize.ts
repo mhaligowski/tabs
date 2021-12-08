@@ -15,4 +15,7 @@ export const parseFromLocation = (location: Location): Tabulature | null => {
   return JSON.parse(stringifiedTab);
 };
 
-
+export const serializeTab = (tab: Tabulature): string => {
+  const raw = JSON.stringify(tab);
+  return window.btoa(raw);
+};

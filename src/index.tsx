@@ -17,6 +17,7 @@ import { Cursor } from "./cursor/cursor";
 import cursorSlice, { up, down, left, right, goTo } from "./cursor/slice";
 import { config } from "./config";
 import { SvgRenderer } from "./render";
+import { Provider } from "react-redux";
 
 /**
  * Set up state management.
@@ -25,7 +26,12 @@ const store = configureStore({
   reducer: { cursor: cursorSlice, tabulature: tabulatureSlice },
 });
 
-ReactDOM.render(App, document.getElementById("app"));
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById("app")
+);
 
 var draw: Svg = SVG()
   .addTo("#root")
