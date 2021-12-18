@@ -1,3 +1,5 @@
+import "./index.css";
+
 import keys from "mousetrap";
 import { configureStore } from "@reduxjs/toolkit";
 import { Svg, SVG } from "@svgdotjs/svg.js";
@@ -34,7 +36,7 @@ ReactDOM.render(
 );
 
 var draw: Svg = SVG()
-  .addTo("#root")
+  .addTo("#svg")
   .size(600, 100 + config.verticalStringSpace * 2);
 
 const tabToRender = parseFromLocation(window.location);
