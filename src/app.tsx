@@ -1,7 +1,8 @@
 import clsx from "clsx";
 import React from "react";
 import { useSelector } from "react-redux";
-import { serializeTab } from "./tab/serialize";
+
+import { ShareWidget } from "./share/widget";
 
 const App = () => {
   const tabulature = useSelector((state: any) => state.tabulature);
@@ -26,7 +27,13 @@ const App = () => {
         <div id="svg" className="grid place-items-center" />
       </section>
 
-      <footer>tabs.mhlg.io</footer>
+      <section>
+        <ShareWidget />
+      </section>
+
+      <footer className="border-solid border-t-2 border-gray-400 mt-6">
+        tabs.mhlg.io
+      </footer>
     </div>
   );
 };

@@ -1,32 +1,30 @@
 import "./index.css";
 
 import keys from "mousetrap";
-import { configureStore } from "@reduxjs/toolkit";
 import { Svg, SVG } from "@svgdotjs/svg.js";
 import React from "react";
 import ReactDOM from "react-dom";
 
-import tabulatureSlice, {
-  setTabulature,
-  set,
-  remove,
-  insert,
-} from "./tab/slice";
+import { setTabulature, set, remove, insert } from "./tab/slice";
 import { parseFromLocation } from "./tab/serialize";
 
 import { App } from "./app";
 import { Cursor } from "./cursor/cursor";
-import cursorSlice, { up, down, left, right, goTo } from "./cursor/slice";
+import { up, down, left, right, goTo } from "./cursor/slice";
 import { config } from "./config";
 import { SvgRenderer } from "./render";
 import { Provider } from "react-redux";
 
-/**
- * Set up state management.
- */
-const store = configureStore({
-  reducer: { cursor: cursorSlice, tabulature: tabulatureSlice },
-});
+import { store } from "./store";
+
+const tabToRender = parseFromLocation(window.location);
+if (tabToRender) {
+  console.log("Parsed: ", tabToRender);
+  store.dispatch(setTabulature(tabToRender));
+  console.log("After dispatch:", store.getState().tabulature);
+}
+
+store.dispatch(goTo({ stringNo: 5, position: 0 } as Cursor));
 
 ReactDOM.render(
   <Provider store={store}>
@@ -39,12 +37,7 @@ var draw: Svg = SVG()
   .addTo("#svg")
   .size(600, 100 + config.verticalStringSpace * 2);
 
-const tabToRender = parseFromLocation(window.location);
-if (tabToRender) {
-  store.dispatch(setTabulature(tabToRender));
-}
-
-store.dispatch(goTo({ stringNo: 5, position: 0 } as Cursor));
+console.log("current state", store.getState().tabulature);
 
 const renderer = new SvgRenderer(draw);
 renderer.drawOrRefreshStaff(store.getState().tabulature);

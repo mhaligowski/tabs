@@ -1,11 +1,28 @@
-import reducer, { set, remove, insert } from "./slice";
+import reducer, { set, remove, insert, setTabulature } from "./slice";
 
 it("should return the initial state", () => {
   expect(reducer(undefined, {})).not.toBeUndefined();
 });
 
+it("should update the state", () => {
+  const state = {
+    stringCount: 6,
+    contents: [{ symbols: [{ stringNo: 5, fret: 5 }] }],
+  };
+
+  const newState = {
+    stringCount: 6,
+    contents: [{ symbols: [{ stringNo: 5, fret: 7 }] }],
+  };
+
+  const result = reducer(state, setTabulature(newState));
+
+  expect(result).toEqual(newState);
+});
+
 it("should set the empty position", () => {
   const state = {
+    stringCount: 6,
     contents: [
       { symbols: [{ stringNo: 5, fret: 5 }] },
       { symbols: [{ stringNo: 5, fret: 8 }] },
@@ -16,6 +33,7 @@ it("should set the empty position", () => {
   const result = reducer(state, set({ fret: 12, stringNo: 3, position: 0 }));
 
   const expected = {
+    stringCount: 6,
     contents: [
       {
         symbols: [

@@ -47,7 +47,7 @@ const TabulatureSlice = createSlice({
   initialState: defaultTab,
   reducers: {
     setTabulature: (state, action: PayloadAction<Tabulature>) => {
-      state = action.payload;
+      Object.assign(state, action.payload);
     },
     set: (state, action: PayloadAction<SetActionPayload>) => {
       const { position, fret, stringNo } = action.payload;
