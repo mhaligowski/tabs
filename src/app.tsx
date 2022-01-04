@@ -9,7 +9,7 @@ const App = () => {
 
   return (
     <div className={clsx("container", "mx-auto", "px-4")}>
-      <section className="mx-auto">
+      <section className={clsx("mx-auto", "my-20")}>
         <h1
           className={clsx(
             "h-12",

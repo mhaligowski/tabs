@@ -1,28 +1,30 @@
 import clsx from "clsx";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
+import { useClipboard } from "./clipboard";
 import { useAppSelector } from "../hooks";
 import { serializeTab } from "../tab/serialize";
 
 export const ShareWidget = () => {
+  const clipboard = useClipboard();
   const tab = useAppSelector((state) => state.tabulature);
-  const [serialized, setSerialized] = useState(null);
+  const [copied, setCopied] = useState(false);
 
   return (
     <div className="grid place-items-center">
       <button
-        className={clsx({ hidden: serialized })}
+        className={clsx({ hidden: copied })}
         onClick={() => {
-          setSerialized(serializeTab(tab));
+          const u = new URL(window.location.toString());
+          const l = new URL(`/?tab=${serializeTab(tab)}`, u).toString();
+
+          clipboard.copy(l);
+          setCopied(true);
         }}
       >
         share
       </button>
-      <a
-        href={`/?tab=${serialized}`}
-        className={clsx({ hidden: !!!serialized })}
-      >
-        link
-      </a>
+      <span className={clsx({ hidden: !copied })}>copied!</span>
     </div>
   );
 };
