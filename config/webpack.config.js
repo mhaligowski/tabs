@@ -20,6 +20,7 @@ const config = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve("public", "index.html"),
+      title: "🎸 Tabulators tool",
     }),
 
     new MiniCssExtractPlugin(),
